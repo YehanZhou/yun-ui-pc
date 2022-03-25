@@ -88,6 +88,7 @@ import Empty from '../packages/empty/index.js';
 import Descriptions from '../packages/descriptions/index.js';
 import DescriptionsItem from '../packages/descriptions-item/index.js';
 import Result from '../packages/result/index.js';
+import Picker from '../packages/picker/index.js';
 import locale from 'yun-ui-pc/src/locale';
 import CollapseTransition from 'yun-ui-pc/src/transitions/collapse-transition';
 
@@ -175,7 +176,8 @@ const components = [
   Descriptions,
   DescriptionsItem,
   Result,
-  CollapseTransition
+  CollapseTransition,
+  Picker
 ];
 
 const install = function(Vue, opts = {}) {

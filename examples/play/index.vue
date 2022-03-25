@@ -1,6 +1,12 @@
 <template>
   <div style="margin: 20px;">
-    <y-input v-model="input" placeholder="请输入内容"></y-input>
+     <y-popover
+      placement="bottom-start"
+      width="100"
+      trigger="click">
+      <y-picker />
+      <y-input slot="reference"></y-input>
+    </y-popover>
   </div>
 </template>
 
