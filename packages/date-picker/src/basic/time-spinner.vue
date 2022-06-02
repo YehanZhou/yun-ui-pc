@@ -1,9 +1,7 @@
 <template>
   <div class="y-time-spinner" :class="{ 'has-seconds': showSeconds }">
-    <template v-if="!arrowControl">
+    <template>
       <y-scrollbar
-        @mouseenter.native="emitSelectRange('hours')"
-        @mousemove.native="adjustCurrentSpinner('hours')"
         class="y-time-spinner__wrapper"
         wrap-style="max-height: inherit;"
         view-class="y-time-spinner__list"
@@ -18,8 +16,6 @@
           :class="{ 'active': hour === hours, 'disabled': disabled }">{{ ('0' + (amPmMode ? (hour % 12 || 12) : hour )).slice(-2) }}{{ amPm(hour) }}</li>
       </y-scrollbar>
       <y-scrollbar
-        @mouseenter.native="emitSelectRange('minutes')"
-        @mousemove.native="adjustCurrentSpinner('minutes')"
         class="y-time-spinner__wrapper"
         wrap-style="max-height: inherit;"
         view-class="y-time-spinner__list"
@@ -35,8 +31,6 @@
       </y-scrollbar>
       <y-scrollbar
         v-show="showSeconds"
-        @mouseenter.native="emitSelectRange('seconds')"
-        @mousemove.native="adjustCurrentSpinner('seconds')"
         class="y-time-spinner__wrapper"
         wrap-style="max-height: inherit;"
         view-class="y-time-spinner__list"
@@ -50,52 +44,6 @@
           :class="{ 'active': key === seconds }"
           :key="key">{{ ('0' + key).slice(-2) }}</li>
       </y-scrollbar>
-    </template>
-    <template v-if="arrowControl">
-      <div
-        @mouseenter="emitSelectRange('hours')"
-        class="y-time-spinner__wrapper is-arrow">
-        <i v-repeat-click="decrease" class="y-time-spinner__arrow y-icon-arrow-up"></i>
-        <i v-repeat-click="increase" class="y-time-spinner__arrow y-icon-arrow-down"></i>
-        <ul class="y-time-spinner__list" ref="hours">
-          <li
-            class="y-time-spinner__item"
-            :class="{ 'active': hour === hours, 'disabled': hoursList[hour] }"
-            v-for="(hour, key) in arrowHourList"
-            :key="key">{{ hour === undefined ? '' : ('0' + (amPmMode ? (hour % 12 || 12) : hour )).slice(-2) + amPm(hour) }}</li>
-        </ul>
-      </div>
-      <div
-        @mouseenter="emitSelectRange('minutes')"
-        class="y-time-spinner__wrapper is-arrow">
-        <i v-repeat-click="decrease" class="y-time-spinner__arrow y-icon-arrow-up"></i>
-        <i v-repeat-click="increase" class="y-time-spinner__arrow y-icon-arrow-down"></i>
-        <ul class="y-time-spinner__list" ref="minutes">
-          <li
-            class="y-time-spinner__item"
-            :class="{ 'active': minute === minutes }"
-            v-for="(minute, key) in arrowMinuteList"
-            :key="key">
-            {{ minute === undefined ? '' : ('0' + minute).slice(-2) }}
-          </li>
-        </ul>
-      </div>
-      <div
-        @mouseenter="emitSelectRange('seconds')"
-        class="y-time-spinner__wrapper is-arrow"
-        v-if="showSeconds">
-        <i v-repeat-click="decrease" class="y-time-spinner__arrow y-icon-arrow-up"></i>
-        <i v-repeat-click="increase" class="y-time-spinner__arrow y-icon-arrow-down"></i>
-        <ul class="y-time-spinner__list" ref="seconds">
-          <li
-            v-for="(second, key) in arrowSecondList"
-            class="y-time-spinner__item"
-            :class="{ 'active': second === seconds }"
-            :key="key">
-            {{ second === undefined ? '' : ('0' + second).slice(-2) }}
-          </li>
-        </ul>
-      </div>
     </template>
   </div>
 </template>
@@ -119,7 +67,6 @@
         type: Boolean,
         default: true
       },
-      arrowControl: Boolean,
       amPmMode: {
         type: String,
         default: '' // 'a': am/pm; 'A': AM/PM
@@ -177,18 +124,18 @@
 
     mounted() {
       this.$nextTick(() => {
-        !this.arrowControl && this.bindScrollEvent();
+        // this.bindScrollEvent();
       });
     },
 
     methods: {
-      increase() {
-        this.scrollDown(1);
-      },
+      // increase() {
+      //   this.scrollDown(1);
+      // },
 
-      decrease() {
-        this.scrollDown(-1);
-      },
+      // decrease() {
+      //   this.scrollDown(-1);
+      // },
 
       modifyDateField(type, value) {
         switch (type) {
@@ -294,7 +241,7 @@
         return content;
       },
       typeItemHeight(type) {
-        return this.$refs[type].$el.querySelector('li').offsetHeight;
+        return this.$refs[type].$el.querySelector('li').offsetHeight + 5;
       },
       scrollBarHeight(type) {
         return this.$refs[type].$el.offsetHeight;
